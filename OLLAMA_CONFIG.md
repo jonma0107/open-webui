@@ -65,21 +65,19 @@ Con esta configuración, Open WebUI puede conectarse a Ollama directamente en `1
 
 Para que Ollama acepte conexiones de cualquier interfaz de red:
 
-1. **Editar el servicio:**
-   Ejecuta el siguiente comando en la terminal:
+1. **Crear el archivo de configuración:**
+   Para evitar problemas con el editor interactivo de la terminal,
+   puedes crear el directorio y el archivo directamente
+   ejecutando estos comandos (cópialos y pégalos):
    ```bash
-   sudo systemctl edit ollama.service
+   sudo mkdir -p /etc/systemd/system/ollama.service.d
+   
+   echo -e "[Service]\nEnvironment=\"OLLAMA_HOST=0.0.0.0\"" | \
+   sudo tee /etc/systemd/system/ollama.service.d/override.conf
    ```
 
-2. **Agregar la variable de entorno:**
-   En el editor, pega las siguientes líneas:
-   ```ini
-   [Service]
-   Environment="OLLAMA_HOST=0.0.0.0"
-   ```
-
-3. **Aplicar cambios:**
-   Guarda el archivo y reinicia el servicio:
+2. **Aplicar cambios:**
+   Recarga la configuración y reinicia el servicio:
    ```bash
    sudo systemctl daemon-reload
    sudo systemctl restart ollama
